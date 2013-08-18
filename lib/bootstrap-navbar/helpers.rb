@@ -3,14 +3,12 @@ require 'uri'
 module BootstrapNavbar::Helpers
   def nav_bar(options = {}, &block)
     nav_bar_div options do
-      navbar_inner_div do
-        container_div options[:brand], options[:brand_link], options[:responsive], options[:fluid], &block
-      end
+      container_div options[:brand], options[:brand_link], options[:responsive], options[:fluid], &block
     end
   end
 
   def menu_group(options = {}, &block)
-    css_classes = %w(nav).tap do |css_classes|
+    css_classes = %w(nav navbar-nav).tap do |css_classes|
       css_classes << "pull-#{options.delete(:pull)}" if options.has_key?(:pull)
       css_classes << options.delete(:class) if options.has_key?(:class)
     end
@@ -98,10 +96,22 @@ HTML
   end
 
   def brand_link(name, url = nil)
-    prepare_html %(<a href="#{url || '/'}" class="brand">#{name}</a>)
+    prepare_html %(<a href="#{url || '/'}" class="navbar-brand">#{name}</a>)
   end
 
   private
+
+  def nav_bar_header(brand, brand_link, responsive)
+    content = [].tap do |content|
+      content << responsive_button if responsive
+      content << brand_link(brand, brand_link) if brand || brand_link
+    end
+    prepare_html <<-HTML.chomp!
+<div class="navbar-header">
+  #{content.join("\n")}
+</div>
+HTML
+  end
 
   def nav_bar_div(options, &block)
     position = case
@@ -134,8 +144,7 @@ HTML
   def container_div(brand, brand_link, responsive, fluid, &block)
     css_class = fluid ? 'container-fluid' : 'container'
     content = [].tap do |content|
-      content << responsive_button if responsive
-      content << brand_link(brand, brand_link) if brand || brand_link
+      content << nav_bar_header(brand, brand_link, responsive)
       content << if responsive
         responsive_wrapper(&block)
       else
@@ -151,7 +160,7 @@ HTML
 
   def responsive_wrapper(&block)
     prepare_html <<-HTML.chomp!
-<div class="nav-collapse collapse">
+<div class="navbar-collapse collapse">
   #{capture(&block) if block_given?}
 </div>
 HTML
@@ -159,11 +168,11 @@ HTML
 
   def responsive_button
     prepare_html <<-HTML.chomp!
-<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-  <span class='icon-bar'></span>
-  <span class='icon-bar'></span>
-  <span class='icon-bar'></span>
-</a>
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+</button>
 HTML
   end
 

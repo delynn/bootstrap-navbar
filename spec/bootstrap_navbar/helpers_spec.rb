@@ -28,9 +28,7 @@ describe BootstrapNavbar::Helpers do
     context 'without parameters' do
       it 'generates the correct HTML' do
         subject.nav_bar.should have_tag(:div, with: { class: 'navbar' }) do
-          with_tag :div, with: { class: 'navbar-inner' } do
-            with_tag :div, with: { class: 'container' }
-          end
+          with_tag :div, with: { class: 'container' }
         end
       end
     end
@@ -63,15 +61,15 @@ describe BootstrapNavbar::Helpers do
 
     context 'with "brand" and "brank_link" parameters' do
       it 'generates the correct HTML' do
-        subject.nav_bar(brand: 'foo').should have_tag(:a, with: { href: '/', class: 'brand' }, content: 'foo')
-        subject.nav_bar(brand: 'foo', brand_link: 'http://google.com').should have_tag(:a, with: { href: 'http://google.com', class: 'brand' }, content: 'foo')
-        subject.nav_bar(brand_link: 'http://google.com').should have_tag(:a, with: { href: 'http://google.com', class: 'brand' })
+        subject.nav_bar(brand: 'foo').should have_tag(:a, with: { href: '/', class: 'navbar-brand' }, content: 'foo')
+        subject.nav_bar(brand: 'foo', brand_link: 'http://google.com').should have_tag(:a, with: { href: 'http://google.com', class: 'navbar-brand' }, content: 'foo')
+        subject.nav_bar(brand_link: 'http://google.com').should have_tag(:a, with: { href: 'http://google.com', class: 'navbar-brand' })
       end
     end
 
     context 'with "responsive" parameter' do
       it 'generates the correct HTML' do
-        subject.nav_bar(responsive: true).should have_tag(:a, with: { class: 'btn btn-navbar', :'data-toggle' => 'collapse', :'data-target' => '.nav-collapse' }) do
+        subject.nav_bar(responsive: true).should have_tag(:button, with: { :'data-toggle' => 'collapse', :'data-target' => '.navbar-collapse' }) do
           3.times do
             with_tag :span, with: { class: 'icon-bar' }
           end
@@ -90,31 +88,31 @@ describe BootstrapNavbar::Helpers do
     context 'without parameters' do
       it 'generates the correct HTML' do
         subject.menu_group.should have_tag(:ul, with: { class: 'nav' })
-        subject.menu_group { 'foo' }.should have_tag(:ul, with: { class: 'nav' }, content: 'foo')
+        subject.menu_group { 'foo' }.should have_tag(:ul, with: { class: 'nav navbar-nav' }, content: 'foo')
       end
     end
 
     context 'with "pull" parameter' do
       it 'generates the correct HTML' do
-        subject.menu_group(pull: 'right').should have_tag(:ul, with: { class: 'nav pull-right' })
+        subject.menu_group(pull: 'right').should have_tag(:ul, with: { class: 'nav navbar-nav pull-right' })
       end
     end
 
     context 'with "class" parameter' do
       it 'generates the correct HTML' do
-        subject.menu_group(class: 'foo').should have_tag(:ul, with: { class: 'nav foo' })
+        subject.menu_group(class: 'foo').should have_tag(:ul, with: { class: 'nav navbar-nav foo' })
       end
     end
 
     context 'with random parameters' do
       it 'generates the correct HTML' do
-        subject.menu_group(:'data-foo' => 'bar').should have_tag(:ul, with: { class: 'nav', :'data-foo' => 'bar' })
+        subject.menu_group(:'data-foo' => 'bar').should have_tag(:ul, with: { class: 'nav navbar-nav', :'data-foo' => 'bar' })
       end
     end
 
     context 'with many parameters' do
       it 'generates the correct HTML' do
-        subject.menu_group(pull: 'right', class: 'foo', :'data-foo' => 'bar').should have_tag(:ul, with: { class: 'nav foo pull-right', :'data-foo' => 'bar' })
+        subject.menu_group(pull: 'right', class: 'foo', :'data-foo' => 'bar').should have_tag(:ul, with: { class: 'nav navbar-nav foo pull-right', :'data-foo' => 'bar' })
       end
     end
   end
@@ -346,8 +344,8 @@ describe BootstrapNavbar::Helpers do
 
   describe '#brand_link' do
     it 'generates the correct HTML' do
-      subject.brand_link('foo').should have_tag(:a, with: { class: 'brand', href: '/' }, content: 'foo')
-      subject.brand_link('foo', '/foo').should have_tag(:a, with: { class: 'brand', href: '/foo' }, content: 'foo')
+      subject.brand_link('foo').should have_tag(:a, with: { class: 'navbar-brand', href: '/' }, content: 'foo')
+      subject.brand_link('foo', '/foo').should have_tag(:a, with: { class: 'navbar-brand', href: '/foo' }, content: 'foo')
     end
   end
 end
